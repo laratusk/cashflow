@@ -7,8 +7,34 @@ on:
     branches: [ main, develop ]
 
 jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    name: Code Quality
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, dom, fileinfo
+
+      - name: Install dependencies
+        run: composer update --prefer-stable --prefer-dist --no-interaction
+
+      - name: Check rector
+        run: vendor/bin/rector process --dry-run
+
+      - name: Check code style
+        run: vendor/bin/pint --test
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse --no-progress --memory-limit=512M
+
   tests:
     runs-on: ubuntu-latest
+    needs: code-quality
 
     strategy:
       fail-fast: true
@@ -21,7 +47,7 @@ jobs:
           - laravel: '12.*'
             testbench: '10.*'
 
-    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+    name: Tests - PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
     steps:
       - uses: actions/checkout@v4
@@ -37,15 +63,6 @@ jobs:
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --prefer-stable --prefer-dist --no-interaction
-
-      - name: Check rector
-        run: vendor/bin/rector process --dry-run
-
-      - name: Check code style
-        run: vendor/bin/pint --test
-
-      - name: Run PHPStan
-        run: vendor/bin/phpstan analyse --no-progress --memory-limit=512M
 
       - name: Run tests
         run: vendor/bin/phpunit --coverage-text --min=80
