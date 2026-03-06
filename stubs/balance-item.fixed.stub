@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+{{ uses }}
+
+{{ attributes }}final class {{ class }} extends BalanceItem
+{
+    public function amount(): int
+    {
+        return {{ amount }};
+    }
+
+    public function direction(): Direction
+    {
+        return {{ direction }};
+    }
+}

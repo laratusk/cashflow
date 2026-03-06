@@ -1,0 +1,58 @@
+{
+  "name": "laratusk/cashflow",
+  "description": "Double-entry balance transaction ledger for Laravel",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": "^8.2",
+    "illuminate/database": "^11.0|^12.0",
+    "illuminate/support": "^11.0|^12.0",
+    "illuminate/validation": "^11.0|^12.0"
+  },
+  "suggest": {
+    "squirephp/currencies-en": "For currency validation and metadata (ISO 4217)"
+  },
+  "require-dev": {
+    "larastan/larastan": "^3.0",
+    "laravel/pint": "^1.18",
+    "orchestra/testbench": "^9.0|^10.0",
+    "phpunit/phpunit": "^11.0",
+    "rector/rector": "^2.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Laratusk\\Cashflow\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Laratusk\\Cashflow\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit",
+    "analyse": "phpstan analyse --memory-limit=512M",
+    "refactor": "rector process",
+    "refactor:check": "rector process --dry-run",
+    "lint": "pint",
+    "lint:check": "pint --test",
+    "quality": [
+      "@refactor:check",
+      "@lint:check",
+      "@analyse",
+      "@test"
+    ]
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Laratusk\\Cashflow\\CashflowServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}

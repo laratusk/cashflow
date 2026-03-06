@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+{{ uses }}
+
+{{ attributes }}final class {{ class }} extends BalanceItem
+{
+    public function __construct(
+        #[Rule('required', 'integer', 'min:1')]
+        private readonly int $amount,
+    ) {}
+
+    public function direction(): Direction
+    {
+        return {{ direction }};
+    }
+}

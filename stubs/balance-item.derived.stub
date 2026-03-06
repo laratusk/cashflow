@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+{{ uses }}
+
+{{ attributes }}final class {{ class }} extends BalanceItem
+{
+    public function __construct(
+        #[Rule('required', 'numeric', 'gt:0', 'max:100')]
+        private readonly float $rate,
+    ) {}
+
+    public function amount(): int
+    {
+        // TODO: replace BalanceItem::class with the item to derive from
+        return (int) ceil($this->balance()->amountOf(BalanceItem::class) * $this->rate / 100);
+    }
+
+    public function direction(): Direction
+    {
+        return {{ direction }};
+    }
+}
