@@ -16,4 +16,9 @@
             <directory>src</directory>
         </include>
     </source>
+    <coverage>
+        <report>
+            <text outputFile="php://stdout" showOnlySummary="true"/>
+        </report>
+    </coverage>
 </phpunit>
