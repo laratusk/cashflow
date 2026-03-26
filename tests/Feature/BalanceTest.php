@@ -6,6 +6,7 @@ namespace Laratusk\Cashflow\Tests\Feature;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Validation\ValidationException;
 use Laratusk\Cashflow\Balance;
 use Laratusk\Cashflow\Contracts\BalanceItem;
 use Laratusk\Cashflow\Enums\Direction;
@@ -474,7 +475,7 @@ class BalanceTest extends TestCase
 
         $balance = Balance::for($account)->reference($order)->currency('USD');
 
-        $this->expectException(\Illuminate\Validation\ValidationException::class);
+        $this->expectException(ValidationException::class);
         $balance->insert(new Payment(amount: 0));
     }
 
@@ -486,7 +487,7 @@ class BalanceTest extends TestCase
         $balance = Balance::for($account)->reference($order)->currency('USD');
         $balance->insert(new Payment(amount: 10000));
 
-        $this->expectException(\Illuminate\Validation\ValidationException::class);
+        $this->expectException(ValidationException::class);
         $balance->insert(new GatewayFee);
     }
 
